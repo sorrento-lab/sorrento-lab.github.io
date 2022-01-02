@@ -1,10 +1,9 @@
 ---
-title: Child of Test
-parent: Test
-has_children: true
+layout: default
+title: Test-notchild1
 nav_order: 1
 ---
 
-# Child of test
+# Not Child of test
 
-I am a child page.
+I am a not child.
