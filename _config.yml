@@ -7,7 +7,7 @@ search_enabled: false
 # Define Jekyll collections
 collections:
   # Define a collection named "docs", its documents reside in the "_docs" directory
-  docs1:
+  docs:
     permalink: "/:collections/:path/"
     output: true
   docs2:
@@ -19,7 +19,7 @@ just_the_docs:
   # Define which collections are used in just-the-docs
   collections:
     # Reference the "docs" collection
-    docs1:
+    docs:
       # Give the collection a name
       name: Documentation1
       # Exclude the collection from the navigation
