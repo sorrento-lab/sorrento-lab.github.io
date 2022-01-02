@@ -1,5 +1,5 @@
 title: "Sorrento-Lab: a homelab journal"
 description: "A journal of building a homelab using OrangeFR 2Gbps fibre, Proxmox, OPNsense, UnRaid and more..."
 remote_theme: pmarsceill/just-the-docs
-color_scheme: light
+color_scheme: "light"
 search_enabled: false
