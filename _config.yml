@@ -1,4 +1,5 @@
-title: "Remote theme example"
+title: Sorrento-Lab: a homelab journal
+description: A journal of building a homelab using OrangeFR 2Gbps fibre, Proxmox, OPNsense, UnRaid and more...
 remote_theme: pmarsceill/just-the-docs
-color_scheme: "dark"
+color_scheme: nil
 search_enabled: false
