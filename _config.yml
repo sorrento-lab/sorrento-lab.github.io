@@ -8,8 +8,12 @@ search_enabled: false
 collections:
   # Define a collection named "docs", its documents reside in the "_docs" directory
   docs:
-    permalink: "./_docs/"
+    permalink: "/_docs/"
     output: true
+  docs1:
+    permalink: "/_docs/docs1/"
+    output: true
+  
 
 just_the_docs:
   # Define which collections are used in just-the-docs
@@ -23,4 +27,8 @@ just_the_docs:
       nav_exclude: false
       # Exclude the collection from the search
       # Supports true or false (default)
+      search_exclude: false
+    docs:
+      name: Documentation1
+      nav_exclude: false
       search_exclude: false
