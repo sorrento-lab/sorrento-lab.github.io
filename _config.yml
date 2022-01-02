@@ -13,6 +13,9 @@ collections:
   docs1:
     permalink: "/_docs/docs1/"
     output: true
+  docs2:
+    permalink: "/_docs/docs2/"
+    output: true
   
 
 just_the_docs:
@@ -30,5 +33,9 @@ just_the_docs:
       search_exclude: false
     docs1:
       name: Documentation1
+      nav_exclude: false
+      search_exclude: false
+    docs2:
+      name: Documentation2
       nav_exclude: false
       search_exclude: false
