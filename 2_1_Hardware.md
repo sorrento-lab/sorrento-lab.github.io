@@ -1,6 +1,6 @@
 ---
-title: Hardware Specs
-parent: Introduction
+title: 2.1 Hardware Specs
+parent: 2. Introduction
 has_children: false
 nav_order: 1
 ---
