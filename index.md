@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: 1. Home
 nav_order: 1
 description: "Sorrento-Lab: a journal of building a homelab using OrangeFR 2Gbps fibre, Proxmox, OPNsense, UnRaid and more..."
 permalink: /
