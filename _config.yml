@@ -3,3 +3,8 @@ description: "A journal of building a homelab using OrangeFR 2Gbps fibre, Proxmo
 remote_theme: pmarsceill/just-the-docs
 color_scheme: colour1
 search_enabled: false
+
+# Google Analytics Tracking (optional)
+# e.g, UA-1234567-89
+ga_tracking: UA-91339419-2
+ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true by default)
