@@ -8,7 +8,7 @@ search_enabled: false
 collections:
   # Define a collection named "docs", its documents reside in the "_docs" directory
   docs1:
-    permalink: "/_docs/docs1/"
+    permalink: "/:collections/:path/"
     output: true
   docs2:
     permalink: "/_docs/docs2/"
