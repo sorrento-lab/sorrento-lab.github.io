@@ -28,7 +28,7 @@ just_the_docs:
       # Exclude the collection from the search
       # Supports true or false (default)
       search_exclude: false
-    docs:
+    docs1:
       name: Documentation1
       nav_exclude: false
       search_exclude: false
