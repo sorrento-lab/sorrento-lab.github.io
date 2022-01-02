@@ -35,7 +35,8 @@ According to the following links (xx, yy, zz) VLAN 838 is still in service but s
 OrangeFR DHCP authentication is a little trickier than PPPoE authentication. Unlike PPPoE, which needs a simple username + password, DHCP authentication requires sending and receiving sets of characters with the DHCP process called "options". The process for IPv4 and IPv6 is slightly different for each. The collection of each parameter is described in Section 2.2. The actual input of the options is covered in the OPNsense section (Section XX). 
 
 For information I have added brief descriptions for each option:
-IPv4 sent options (sent by the livebox):
+IPv4 sent options (sent by the livebox):  
+
 |Option number| Description | Value | Remarks| Source of data |
 |-------------|-------------|-------|--------|----------------|
 | 60          | Class ID    |`sagem`|vendor of livebox|Found via liveboxtools `option 60 = 736167656d` (in hex)|
