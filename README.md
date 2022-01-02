@@ -1,3 +1,5 @@
+If you have landed here, go to https://sorrento-lab.github.io/
+
 ### Sorrento-Lab: a journal of building a homelab using OrangeFR 2Gbps fibre, Proxmox, OPNsense, UnRaid and more...
 
 This log serves as a reference for myself and those who also want to to set up a homelab taking advantage of fibre offers (OrangeFR in my case) above 1Gbps using an SFP+ PCIe add-in card, and an always on home server. The implementation detailed in this journal uses Proxmox as a bare metal host, and OPNsense and UnRaid guest VMs. I am not using a VOIP phone - however I have provided some links in the references sections for OPNsense.
