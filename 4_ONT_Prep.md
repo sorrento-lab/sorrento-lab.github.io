@@ -32,4 +32,10 @@ Further SFP ONT testing can be found at [the excellent 2Gbps LaFibre thread here
 
 Other RJ-45 ONTs that have been shown to work include:
 * Huawei HG8010h (I believe this used to be the ONT supplied by OFR for Livebox3/4 customers)
-* Ubiquiti UFiber Nano G [(only compatible with Huawei)](https://lafibre.info/remplacer-livebox/ubiquiti-ufiber-nano-g/)
+* Ubiquiti UFiber Nano G [(only compatible with Huawei)](https://lafibre.info/remplacer-livebox/ubiquiti-ufiber-nano-g/), and also requires a python script to persist SN after reboot.
+
+References and further reading:
+* [https://www.multicominc.com/training/technical-resources/sfps-b-and-c-whats-the-difference/](https://www.multicominc.com/training/technical-resources/sfps-b-and-c-whats-the-difference/)
+* [https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/](https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/)
+* [Ufiber Nano G datasheet](https://dl.ui.com/ds/uf_gpon)
+* [LaFibre Nano G discussion](https://lafibre.info/remplacer-livebox/ubiquiti-ufiber-nano-g/)
