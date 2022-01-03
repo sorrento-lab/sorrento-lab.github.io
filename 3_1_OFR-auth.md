@@ -138,5 +138,5 @@ References:
 * https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
 * https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
 * https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
-* [LiveBoxInfoV2.0.11.zip - this is the one I used (on a windows machine)](/sorrento-lab.github.io/tools/LiveBoxInfo)
+* [LiveBoxInfoV2.0.11.zip - this is the one I used (on a windows machine)](/tools/LiveBoxInfo)
 * (If I have shown something here that has not been referenced properly please let me know!)
