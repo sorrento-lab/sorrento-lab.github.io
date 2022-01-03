@@ -71,7 +71,7 @@ Option 90 is orangeFR's authentication method. It uses the following method to g
     * 1 random byte, let's call it RANDCHAR, immediately followed by
     * 16 bytes which is an MD5 hash generated with the following formula: MD5 (RANDCHAR + PASSWORD + RANDSTRING), where PASSWORD is the OFR fti password
 
-[For further reading on Option 90, reference to this post. The information above is from post #10.](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/)
+[For further reading on Option 90, refer to this post. The information above is from post #10.](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/)
 
 LaFibre's "zoc" created a script to develop the long option 90, see reference xx  
 
