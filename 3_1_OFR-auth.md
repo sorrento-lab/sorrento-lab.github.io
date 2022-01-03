@@ -57,7 +57,7 @@ IPv4 sent options (sent by the livebox):
 |-------------|-------------|-------|--------|----------------|
 | 60          | Class ID    |`sagem`|vendor of livebox|Found via liveboxtools `option 60 = 736167656d` (in hex)|
 | 61          | Client ID | `019x9x9x9x9x9x`|"01" followed by MAC address of livebox. In OPNsense this is entered in the DHCP unique identifier field, not in the sent options. | On back of livebox or via livebox tools, substitute 9x9x9x9x9x9x with your MAC|
-| 77          | User class ID |+FSVDSL_livebox.Internet.softathome.Livebox4 |Livebox4 is shown also in Livebox5 models|Found via liveboxtools option 77 = 2b46535644534c5f6c697665626f782e496e7465726e65742e736f66746174686f6d652e4c697665626f7834 (in hex)|
+| 77          | User class ID | `+FSVDSL_livebox.Internet.softathome.Livebox4` |Livebox4 is shown also in Livebox5 models|Found via liveboxtools option 77 = `2b46535644534c5f6c697665626f782e496e7465726e65742e736f66746174686f6d652e4c697665626f7834` (in hex)|
 | 90          | Authentication |140 char string|see below|  |
 
 Option 90 is orangeFR's authentication method. It uses the following method to generate the 140 character string:
@@ -74,24 +74,25 @@ Option 90 is orangeFR's authentication method. It uses the following method to g
 [For further reading on Option 90, reference to this post. The information above is from post #10.](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/)
 
 LaFibre's "zoc" created a script to develop the long option 90, see reference xx  
-<code>#!/bin/bash</br>
-</br>
-login='fti/*******'</br>
-pass='****************'</br>
-</br>
-tohex() {</br>
-  for h in $(echo $1 | sed "s/\(.\)/\1 /g"); do printf %02x \'$h; done</br>
-}</br>
-</br>
-addsep() {</br>
-  echo $(echo $1 | sed "s/\(.\)\(.\)/:\1\2/g")</br>
-}</br>
-</br>
-r=$(dd if=/dev/urandom bs=1k count=1 2>&1 | md5sum | cut -c1-16)</br>
-id=${r:0:1}</br>
-h=3C12$(tohex ${r})0313$(tohex ${id})$(echo -n ${id}${pass}${r} | md5sum | cut -c1-32)</br>
-</br>
-echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})</code>
+<code>
+    #!/bin/bash
+    
+    login='fti/*******'
+    pass='****************'
+
+    tohex() {
+      for h in $(echo $1 | sed "s/\(.\)/\1 /g"); do printf %02x \'$h; done</br>
+    }
+    
+    addsep() {
+      echo $(echo $1 | sed "s/\(.\)\(.\)/:\1\2/g")</br>
+    }
+    
+    r=$(dd if=/dev/urandom bs=1k count=1 2>&1 | md5sum | cut -c1-16)
+    id=${r:0:1}
+    h=3C12$(tohex ${r})0313$(tohex ${id})$(echo -n ${id}${pass}${r} | md5sum | cut -c1-32)
+    
+    echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})</code>
 
 IPv4 requested options (requested by the livebox):
 * 1: Subnet mask
@@ -137,3 +138,4 @@ https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modific
 https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
 https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
 https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
+(If I have shown something here that has not been referenced properly please let me know!)
