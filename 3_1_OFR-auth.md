@@ -128,7 +128,7 @@ Further info on DHCP options can be found here:
 Finally note that for certain areas in france the DHCP options need to be sent via a certain VLAN priority, otherwise they will be ignored. The priorities for selection are either 0 or 6 (VLAN DHCP priority 6 appears in use for Paris area).
 
 For TV authentication:
-* Option 125 is sent **from the router to the OFR-TV unit** via the dummy DHCP server that will be set up. 
+* Option 125 is sent from the router to the OFR-TV unit via the dummy DHCP server that will be set up. 
 * Orange DNS server list
 * Domain search list for your geographical area
 
