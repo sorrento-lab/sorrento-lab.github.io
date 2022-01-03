@@ -8,31 +8,47 @@ nav_order: 1
 ### 3.1 Orange Authentication Parameters
 This section presents in brief the authentication steps to achieve a WAN connection - further reading and details can be found in the links at the end of this sub-section. This is my amateur non-expert understanding.
 
-OrangeFR distributes its internet connection by a GPON fibre network. The fibre connections to each distribution point are managed by Optical Line Terminals (OLTs). Each end user connects to the OLT via Optical Network Termination (ONTs, also known as Optical Network Units - ONUs). This forms the first step of achieving a network connection with Orange. The ONT has a discrete microprocessor which will negotiate a connection on the OLT "tree" using certain authentication parameters. This means that it is not possible to have two ONTs with the same authentication parameters attempt to synchronise to the OLT - the OLT will not allow it. ONTs come in SFP forms, or larger forms taking a fibre connection and outputting a RJ-45 1Gbps connection . More can be read on my experiences with these devices at Section XX.
+OrangeFR distributes its internet connection by a GPON fibre network. The fibre connections to each distribution point are managed by Optical Line Terminals (OLTs). Each end user connects to the OLT via Optical Network Termination (ONTs, also known as Optical Network Units - ONUs). This forms the first step of achieving a network connection with Orange. The ONT has a discrete microprocessor which will negotiate a connection on the OLT "tree" using certain authentication parameters. This means that it is not possible to have two ONTs with the same authentication parameters attempt to synchronise to the OLT - the OLT will not allow it. ONTs come in SFP forms, or larger forms taking a fibre connection and outputting a RJ-45 1Gbps connection . More can be read on my experiences with these devices at Section ==TBC==.
 
 As of writing and my experience, OrangeFR requires the following ONT parameters to authenticate with an Orange OLT:
 * ONT serial number - this can be found on the label underneath your livebox, or in the admin section of your livebox at `192.168.1.1`.
   * The ONT serial number is composed of two parts. The first is the vendor identifier. Typically for Livebox5 users it will be `SMBS`, which is a plain text implementation. Then, there are 8 digits following the 4 letters which are in hexadecimal format. 
 * ONT HardwareVersion - this can be found in the admin section of your livebox at `192.168.1.1`.
-  * This also contains the 4 letters from the hardware vendor `SMBS`, as well as XX alphanumeric letters, also in hex(?).
+  * This also contains the 4 letters from the hardware vendor `SMBS`, as well as 8 alphanumeric letters.
 
-For info, Livebox4 users may also need SLID - this is out of the scope of this journal.
+Livebox4 users may also need SLID - this is out of the scope of this journal.
+
 There is some argument for replicating as many parameters as possible to make your ONT look as much as possible as a Orange ONT, however from what I have seen there have been no reported experiences of users being kicked off OLT trees for not enough authentication parameters. 
-The available ONT details in a Livebox5 are as follows:
-* xx
-* yy
-*
+The available ONT details in a Livebox5 ONT section (along with their expected values):
+* VeipPptpUni (TRUE)
+* Omci Is TmOwner (FALSE)
+* Max Bit Rate Supported (1mW)
+* Signal RxPower (value in dBm, typically -15 to -25. Limit <-28dBm for a B+ transceiver, however this is not ideal and could lead to dropped packets under load)
+* Signal TxPower (range between +1.5 and +5 dBm)
+* Temperature (of ONT transceiver package, in degC)
+* Bias (integer)
+* Serial number (SMBS followed by 8 digits in hex, i.e. 4 bytes)
+* Hardware Version (SMBS followed by 8 alphanumerical digits)
+* Equipment ID (SagemcomFast5656OFR)
+* Vendor ID (SMBS)
+* Vendor Product Code (1)
+* Registration ID (mine shows N/A)
+* Voltage (mine shows 32.9V)
+* ONT Software Version 0 (SAHEOFR followed by 6 numbers)
+* ONT Software Version 1 (SAHEOFR followed by 6 numbers)
+* ONT Software Version active (0 or 1)
 
-The second step of authentication with OrangeFR is using DHCP. Note that PPPoE is being slowly taken out of service by OrangeFR, as evidenced in links xx, yy, zz.
-OrangeFR distributes its internet connections via VLANs, in particular:
+The second step of authentication with OrangeFR is using DHCP. PPPoE is being slowly taken out of service by OrangeFR, as evidenced in links seen in forum posts on LaFibre.
+
+OrangeFR distributes its DHCP internet connections via VLANs, in particular:
 * VLAN 832: DHCP WAN + IP-TV VOD
-* VLAN 835: PPPoE WAN
+* VLAN 835: PPPoE WAN (no longer in use)
 * VLAN 838: IP-TV VOD - however this is not used in my implementation, see below
 * VLAN 840: IP-TV
 
-According to the following links (xx, yy, zz) VLAN 838 is still in service but seems to no longer be the default that is used. This can also be observed in the Livebox5 admin info section. My implementation uses VLAN 832 and 840 for the OrangeTV service.
+According to the [LaFibre OPNsense OFR discussion](https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/msg586096/#msg586096) VLAN 838 is still in service but seems to no longer be the default that is used. This can also be observed in the Livebox5 admin info section. My implementation uses VLAN 832 and 840 for the OrangeTV service.
 
-OrangeFR DHCP authentication is a little trickier than PPPoE authentication. Unlike PPPoE, which needs a simple username + password, DHCP authentication requires sending and receiving sets of characters with the DHCP process called "options". The process for IPv4 and IPv6 is slightly different for each. The collection of each parameter is described in Section 2.2. The actual input of the options is covered in the OPNsense section (Section XX). 
+OrangeFR DHCP authentication is a little trickier than PPPoE authentication. Unlike PPPoE, which needs a simple username + password, DHCP authentication requires sending and receiving sets of characters with the DHCP process called "options". The process for IPv4 and IPv6 is slightly different for each. The actual input of the options is covered in the OPNsense section (Section ==TBC==). 
 
 For information I have added brief descriptions for each option:
 IPv4 sent options (sent by the livebox):  
@@ -41,7 +57,7 @@ IPv4 sent options (sent by the livebox):
 |-------------|-------------|-------|--------|----------------|
 | 60          | Class ID    |`sagem`|vendor of livebox|Found via liveboxtools `option 60 = 736167656d` (in hex)|
 | 61          | Client ID | `019x9x9x9x9x9x`|"01" followed by MAC address of livebox. In OPNsense this is entered in the DHCP unique identifier field, not in the sent options. | On back of livebox or via livebox tools, substitute 9x9x9x9x9x9x with your MAC|
-| 77          | User class ID |`+FSVDSL_livebox.Internet.softathome.Livebox4`|Livebox4 is shown also in Livebox5 models|Found via liveboxtools `option 77 = 2b46535644534c5f6c697665626f782e496e7465726e65742e736f66746174686f6d652e4c697665626f7834` (in hex)|
+| 77          | User class ID |+FSVDSL_livebox.Internet.softathome.Livebox4 |Livebox4 is shown also in Livebox5 models|Found via liveboxtools option 77 = 2b46535644534c5f6c697665626f782e496e7465726e65742e736f66746174686f6d652e4c697665626f7834 (in hex)|
 | 90          | Authentication |140 char string|see below|  |
 
 Option 90 is orangeFR's authentication method. It uses the following method to generate the 140 character string:
@@ -55,28 +71,27 @@ Option 90 is orangeFR's authentication method. It uses the following method to g
     * 1 random byte, let's call it RANDCHAR, immediately followed by
     * 16 bytes which is an MD5 hash generated with the following formula: MD5 (RANDCHAR + PASSWORD + RANDSTRING), where PASSWORD is the OFR fti password
 
-Reference answer 10 https://lafibre-info.translate.goog/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/msg579704/?PHPSESSID=nrh818b0ftsmhblpk6np13rt51&_x_tr_sl=fr&_x_tr_tl=en&_x_tr_hl=fr#msg579704
+[For further reading on Option 90, reference to this post. The information above is from post #10.](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/)
 
 LaFibre's "zoc" created a script to develop the long option 90, see reference xx  
-`#
-!/bin/bash
-
-login='fti/*******'
-pass='****************'
-
-tohex() {
-  for h in $(echo $1 | sed "s/\(.\)/\1 /g"); do printf %02x \'$h; done
-}
-
-addsep() {
-  echo $(echo $1 | sed "s/\(.\)\(.\)/:\1\2/g")
-}
-
-r=$(dd if=/dev/urandom bs=1k count=1 2>&1 | md5sum | cut -c1-16)
-id=${r:0:1}
-h=3C12$(tohex ${r})0313$(tohex ${id})$(echo -n ${id}${pass}${r} | md5sum | cut -c1-32)
-
-echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})`
+<code>#!/bin/bash</br>
+</br>
+login='fti/*******'</br>
+pass='****************'</br>
+</br>
+tohex() {</br>
+  for h in $(echo $1 | sed "s/\(.\)/\1 /g"); do printf %02x \'$h; done</br>
+}</br>
+</br>
+addsep() {</br>
+  echo $(echo $1 | sed "s/\(.\)\(.\)/:\1\2/g")</br>
+}</br>
+</br>
+r=$(dd if=/dev/urandom bs=1k count=1 2>&1 | md5sum | cut -c1-16)</br>
+id=${r:0:1}</br>
+h=3C12$(tohex ${r})0313$(tohex ${id})$(echo -n ${id}${pass}${r} | md5sum | cut -c1-32)</br>
+</br>
+echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})</code>
 
 IPv4 requested options (requested by the livebox):
 * 1: Subnet mask
@@ -97,6 +112,7 @@ IPv6 sent raw options (note orangeFR uses "raw" options):
 * 11: Authentication. For OFR this is the same string as DHCPv4 Option 90
 * 15: User class
 * 16: Vendor class
+* 17: "IPv6 requested" - ==to be investigated, my config does not need this raw option...==
 
 IPv6 received raw options:
 * 1: Client ID
@@ -117,3 +133,7 @@ For TV authentication:
 
 References 
 https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/588/
+https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/
+https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
+https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
+https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
