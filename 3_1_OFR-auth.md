@@ -74,8 +74,8 @@ Option 90 is orangeFR's authentication method. It uses the following method to g
 [For further reading on Option 90, reference to this post. The information above is from post #10.](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/)
 
 LaFibre's "zoc" created a script to develop the long option 90, see reference xx  
-<code>
-    #!/bin/bash
+
+    <code>#!/bin/bash
     
     login='fti/*******'
     pass='****************'
