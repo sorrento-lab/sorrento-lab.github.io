@@ -121,9 +121,9 @@ IPv6 received raw options:
 * 11: Authentication
 * 25: Identity association (prefix)
 
-Further info on DHCP options can be found here:
-DHCPv4: https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
-DHCPv6: http://www.networksorcery.com/enp/protocol/dhcpv6.htm
+Further info on DHCP options can be found here:  
+* DHCPv4: https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
+* DHCPv6: http://www.networksorcery.com/enp/protocol/dhcpv6.htm
 
 Finally note that for certain areas in france the DHCP options need to be sent via a certain VLAN priority, otherwise they will be ignored. The priorities for selection are either 0 or 6 (VLAN DHCP priority 6 appears in use for Paris area).
 
