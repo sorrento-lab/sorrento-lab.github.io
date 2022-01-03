@@ -8,7 +8,7 @@ nav_order: 1
 ### 3.1 Orange Authentication Parameters
 This section presents in brief the authentication steps to achieve a WAN connection - further reading and details can be found in the links at the end of this sub-section. This is my amateur non-expert understanding.
 
-OrangeFR distributes its internet connection by a GPON fibre network. The fibre connections to each distribution point are managed by Optical Line Terminals (OLTs). Each end user connects to the OLT via Optical Network Termination (ONTs, also known as Optical Network Units - ONUs). This forms the first step of achieving a network connection with Orange. The ONT has a discrete microprocessor which will negotiate a connection on the OLT "tree" using certain authentication parameters. This means that it is not possible to have two ONTs with the same authentication parameters attempt to synchronise to the OLT - the OLT will not allow it. ONTs come in SFP forms, or larger forms taking a fibre connection and outputting a RJ-45 1Gbps connection . More can be read on my experiences with these devices at Section ==TBC==.
+OrangeFR distributes its internet connection by a GPON fibre network. The fibre connections to each distribution point are managed by Optical Line Terminals (OLTs). Each end user connects to the OLT via Optical Network Termination (ONTs, also known as Optical Network Units - ONUs). This forms the first step of achieving a network connection with Orange. The ONT has a discrete microprocessor which will negotiate a connection on the OLT "tree" using certain authentication parameters. This means that it is not possible to have two ONTs with the same authentication parameters attempt to synchronise to the OLT - the OLT will not allow it. ONTs come in SFP forms, or larger forms taking a fibre connection and outputting a RJ-45 1Gbps connection . More can be read on my experiences with these devices at Section 4.
 
 As of writing and my experience, OrangeFR requires the following ONT parameters to authenticate with an Orange OLT:
 * ONT serial number - this can be found on the label underneath your livebox, or in the admin section of your livebox at `192.168.1.1`.
@@ -48,7 +48,7 @@ OrangeFR distributes its DHCP internet connections via VLANs, in particular:
 
 According to the [LaFibre OPNsense OFR discussion](https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/msg586096/#msg586096) VLAN 838 is still in service but seems to no longer be the default that is used. This can also be observed in the Livebox5 admin info section. My implementation uses VLAN 832 and 840 for the OrangeTV service.
 
-OrangeFR DHCP authentication is a little trickier than PPPoE authentication. Unlike PPPoE, which needs a simple username + password, DHCP authentication requires sending and receiving sets of characters with the DHCP process called "options". The process for IPv4 and IPv6 is slightly different for each. The actual input of the options is covered in the OPNsense section (Section ==TBC==). 
+OrangeFR DHCP authentication is a little trickier than PPPoE authentication. Unlike PPPoE, which needs a simple username + password, DHCP authentication requires sending and receiving sets of characters with the DHCP process called "options". The process for IPv4 and IPv6 is slightly different for each. The actual input of the options is covered in the OPNsense section (Section 6). 
 
 For information I have added brief descriptions for each option:
 IPv4 sent options (sent by the livebox):  
@@ -122,8 +122,8 @@ IPv6 received raw options:
 * 25: Identity association (prefix)
 
 Further info on DHCP options can be found here:  
-* DHCPv4: https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml
-* DHCPv6: http://www.networksorcery.com/enp/protocol/dhcpv6.htm
+* DHCPv4: [https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml](https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml)
+* DHCPv6: [http://www.networksorcery.com/enp/protocol/dhcpv6.htm](http://www.networksorcery.com/enp/protocol/dhcpv6.htm)
 
 Finally note that for certain areas in france the DHCP options need to be sent via a certain VLAN priority, otherwise they will be ignored. The priorities for selection are either 0 or 6 (VLAN DHCP priority 6 appears in use for Paris area).
 
@@ -133,10 +133,10 @@ For TV authentication:
 * Domain search list for your geographical area
 
 References:
-* https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/588/
-* https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/
-* https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
-* https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
-* https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
+* [https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/588/](https://lafibre.info/remplacer-livebox/cacking-nouveau-systeme-de-generation-de-loption-90-dhcp/588/)
+* [https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/](https://lafibre.info/remplacer-livebox/opnsense-remplacer-livebox-aucune-modification-necessaire/)
+* [https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html](https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html)
+* [https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html](https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html)
+* [https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/](https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/)
 * [Liveboxinfo utility](https://www.liveboxinfos.ga/index.html) - - [Always check in virustotal - my results here](https://www.virustotal.com/gui/url/4813956bceb07bb1c27c1c6ff414b7d4aca78f18d93c35b04e07aa0eacee247a?nocache=1)
 * (If I have shown something here that has not been referenced properly please let me know!)
