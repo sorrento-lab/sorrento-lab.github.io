@@ -138,5 +138,5 @@ References:
 * https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
 * https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
 * https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
-* [Liveboxinfo utility](https://www.liveboxinfos.ga/index.html) [Always check in virustotal](https://www.virustotal.com/gui/url/4813956bceb07bb1c27c1c6ff414b7d4aca78f18d93c35b04e07aa0eacee247a?nocache=1)
+* [Liveboxinfo utility](https://www.liveboxinfos.ga/index.html) - - [Always check in virustotal - my results here](https://www.virustotal.com/gui/url/4813956bceb07bb1c27c1c6ff414b7d4aca78f18d93c35b04e07aa0eacee247a?nocache=1)
 * (If I have shown something here that has not been referenced properly please let me know!)
