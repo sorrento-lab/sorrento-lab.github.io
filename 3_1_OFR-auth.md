@@ -57,7 +57,7 @@ IPv4 sent options (sent by the livebox):
 |-------------|-------------|-------|--------|----------------|
 | 60          | Class ID    |`sagem`|vendor of livebox|Found via liveboxtools `option 60 = 736167656d` (in hex)|
 | 61          | Client ID | `019x9x9x9x9x9x`|"01" followed by MAC address of livebox. In OPNsense this is entered in the DHCP unique identifier field, not in the sent options. | On back of livebox, substitute 9x9x9x9x9x9x with your MAC|
-| 77          | User class ID | `+FSVDSL_livebox.Internet.`  `softathome.Livebox4` |Livebox4 is shown also in Livebox5 models|Found via liveboxinfo utility or sniffing the DHCP traffic option 77 = `2b46535644534c5f6c`  `697665626f782e49`  `6e7465726e65742e736f6`  `6746174686f6d652e4`  `c697665626f7834` (in hex)|
+| 77          | User class ID | `+FSVDSL_livebox.Internet.`  `softathome.Livebox4` |Livebox4 is shown also in Livebox5 models|Found via liveboxinfo utility (see refs) or sniffing the DHCP traffic option 77 = `2b46535644534c5f6c`  `697665626f782e49`  `6e7465726e65742e736f6`  `6746174686f6d652e4`  `c697665626f7834` (in hex)|
 | 90          | Authentication |140 char string|see below|  |
 
 Option 90 is orangeFR's authentication method. It uses the following method to generate the 140 character string:
@@ -138,4 +138,5 @@ References:
 * https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html
 * https://docs.opnsense.org/manual/how-tos/orange_fr_tvf.html
 * https://lafibre.info/remplacer-livebox/guide-de-connexion-fibre-directement-sur-un-routeur-voire-meme-en-2gbps/
+* [Liveboxinfo utility](https://www.liveboxinfos.ga/index.html) [Always check in virustotal](https://www.virustotal.com/gui/url/4813956bceb07bb1c27c1c6ff414b7d4aca78f18d93c35b04e07aa0eacee247a?nocache=1)
 * (If I have shown something here that has not been referenced properly please let me know!)
