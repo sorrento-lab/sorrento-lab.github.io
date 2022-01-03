@@ -75,7 +75,7 @@ Option 90 is orangeFR's authentication method. It uses the following method to g
 
 LaFibre's "zoc" created a script to develop the long option 90, see reference xx  
 
-    <code>#!/bin/bash
+    #!/bin/bash
     
     login='fti/*******'
     pass='****************'
@@ -92,7 +92,7 @@ LaFibre's "zoc" created a script to develop the long option 90, see reference xx
     id=${r:0:1}
     h=3C12$(tohex ${r})0313$(tohex ${id})$(echo -n ${id}${pass}${r} | md5sum | cut -c1-32)
     
-    echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})</code>
+    echo 00:00:00:00:00:00:00:00:00:00:00:1A:09:00:00:05:58:01:03:41:01:0D$(addsep $(tohex ${login})${h})
 
 IPv4 requested options (requested by the livebox):
 * 1: Subnet mask
