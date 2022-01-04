@@ -58,7 +58,7 @@ IPv4 sent options (sent by the livebox):
 | 60          | Class ID    |`sagem`|vendor of livebox|Found via liveboxtools `option 60 = 736167656d` (in hex)|
 | 61          | Client ID | `019x9x9x9x9x9x`|"01" followed by MAC address of livebox. In OPNsense this is entered in the DHCP unique identifier field, not in the sent options. | On back of livebox, substitute 9x9x9x9x9x9x with your MAC|
 | 77          | User class ID | `+FSVDSL_livebox.Internet.`  `softathome.Livebox4` |Livebox4 is shown also in Livebox5 models|Found via liveboxinfo utility (see refs) or sniffing the DHCP traffic option 77 = `2b46535644534c5f6c`  `697665626f782e49`  `6e7465726e65742e736f6`  `6746174686f6d652e4`  `c697665626f7834` (in hex)|
-| 90          | Authentication |140 char string|see below|  |
+| 90          | Authentication |140 char string|See below| Generation script or liveboxinfo utility |
 
 Option 90 is orangeFR's authentication method. It uses the following method to generate the 140 character string:
 * The first 11 bytes are set to 0: this is a location the size of the standard DHCP Option 90 header, as defined in RFC 3118 . These parameters not being used, they are set to 0.
