@@ -20,7 +20,7 @@ The IP addresses can be changed later once OPNsense is set up.
 To remove the subscription nag:
 [https://github.com/Jamesits/pve-fake-subscription](https://github.com/Jamesits/pve-fake-subscription)
 
-To a quick update of proxmox:  
+To do a quick update of proxmox:  
 `apt-get update`  
 `apt-get dist-upgrade`  
 
