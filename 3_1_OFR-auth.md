@@ -125,7 +125,7 @@ Further info on DHCP options can be found here:
 * DHCPv4: [https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml](https://www.iana.org/assignments/bootp-dhcp-parameters/bootp-dhcp-parameters.xhtml)
 * DHCPv6: [http://www.networksorcery.com/enp/protocol/dhcpv6.htm](http://www.networksorcery.com/enp/protocol/dhcpv6.htm)
 
-Finally note that for certain areas in france the DHCP options need to be sent via a certain VLAN priority, otherwise they will be ignored. The priorities for selection are either 0 or 6 (VLAN DHCP priority 6 appears in use for Paris area).
+Finally note that for certain areas in france the DHCP options need to be sent via a certain QoS priority, otherwise they will be ignored. The priorities for selection are either 0 or 6 (DHCP priority 6 appears in use for Paris area). Take care that this is only specified in the DHCP specification, not for the VLAN internet traffic itself. Further details can be found in "Section 5.0 - OPNsense" for setting this correctly.
 
 For TV authentication:
 * Option 125 is sent from the router to the OFR-TV unit via the dummy DHCP server that will be set up. 
