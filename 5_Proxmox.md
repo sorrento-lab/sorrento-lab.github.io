@@ -1,6 +1,6 @@
 ---
 title: "5. Proxmox Configuration"
-has_children: true
+has_children: false
 nav_order: 5
 ---
 
