@@ -5,6 +5,8 @@ has_children: false
 nav_order: 1
 ---
 
+### 6.1 OPNsense guest VM configuration
+
 OPNsense will be run as a guest within Proxmox. The disadvantage of this is that if Proxmox is down, then OPNsense is down. Currently no Proxmox or OPNsense related crashes have been experienced, if a crash is observed then a CARP setup will be investigated. The advantage is lower power consumption (single, rather than multiple devices) and the ability to take snapshots between updates.
 
 Set up a new VM with the following parameters:
