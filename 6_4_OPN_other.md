@@ -17,5 +17,6 @@ If running under proxmox, add the QEMU guest agent to OPNsense to let Proxmox qu
 * Reboot again for good measure
 
 [Reference here (reply#2)](https://forum-opnsense-org.translate.goog/index.php?topic=23284.0&_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=en-US&_x_tr_pto=nui)
+
 [Github bug closed here, optional reading](https://github.com/opnsense/plugins/issues/2405)
 
