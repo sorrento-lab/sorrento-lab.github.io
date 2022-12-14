@@ -22,6 +22,8 @@ Interfaces -> Other types -> VLAN. Add the following vlans (shown here bxe0 is t
 | bxe0     | 838  | 4             | Orange TV VLAN 838 |
 | bxe0     | 840  | 5             | Orange TV VLAN 840 |
 
+Note that some older guides on lafibre will indicate that VLAN 835 should also be set up for PPPoE - this is no longer needed, OrangeFR appears to have decommissioned the PPPoE authentication for consumer plans and also appears to be moving to DHCP for Pro plans.
+
 Interfaces -> Assignments: Assign `vlan832 on bxe0` to WAN and then "Save"
 
 Interfaces -> WAN
@@ -60,3 +62,6 @@ Interfaces -> Settings
   * DHCP unique identifier = `00:03:00:01:+MAC address` See option 61 description above. Note that here there is an additional `00:03` added to the front.
 
 Make sure to click save and apply at each screen.
+
+References:
+[https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html](https://docs.opnsense.org/manual/how-tos/orange_fr_fttp.html)
