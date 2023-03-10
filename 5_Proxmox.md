@@ -19,10 +19,18 @@ The IP addresses can be changed later once OPNsense is set up.
 
 To remove the subscription nag:
 [https://github.com/Jamesits/pve-fake-subscription](https://github.com/Jamesits/pve-fake-subscription)
+Ensure that this is removed prior to any distr-upgrade of proxmox, and check if it is still valid for the PVE version you upgrade to before re-installing.
 
-To do a quick update of proxmox:  
+To do an upgrade of proxmox (PVE and kernels):  
 `apt-get update`  
 `apt-get dist-upgrade`  
 
-In system -> network, add a OVS bridge vmbr1 and click autostart = on. No need to fill out other parameters.
-The management interface eno1 can remain bonded via linux bridge on vmbr0. eno1 will be hard plugged to the switch rather than virtually administered.
+To just update packages:
+`apt-get update`  
+`apt-get upgrade`  
+
+To recreate self-signed certificates:
+`pvecm updatecerts --force`
+Reference: [https://forum.proxmox.com/threads/rebuild-ssl-certificate-for-updated-domain-name.25057/](https://forum.proxmox.com/threads/rebuild-ssl-certificate-for-updated-domain-name.25057/)
+
+eno1 is bridged to vmbr0. It is possible to add more devices to this virtual birdge for a "all in one box" setup, but I found the virtual bridge does not like more than 3 physical devices on it. Instead, bridge everything inside opnsense. The disadvantage of this is that if you log into proxmox usually via wifi, you will not be able to do so until opnsense and pihole are up. It is still possible to physically access proxmox interface for debugging via eno1.
