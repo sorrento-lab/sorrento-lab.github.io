@@ -39,4 +39,45 @@ Obviously you can skip installing plexmediaserver, because it is already install
 
 Reboot the LXC.
 
+Now follow steps 1,3 and 6 of this guide:
+[https://forums.serverbuilds.net/t/guide-hardware-transcoding-the-jdm-way-quicksync-and-nvenc/1408/5](https://forums.serverbuilds.net/t/guide-hardware-transcoding-the-jdm-way-quicksync-and-nvenc/1408/5)
+
+Go to `172.16.10.222/manage` and import your libraries. While that is importing, create a new port forward rule in OPNsense to `172.16.10.222/32400` for remote access.
+
+Make sure you re-link your tautulli stats collector.
+
+To monitor the intel iGPU, we will re-use a small script developed here:
+[https://github.com/brianmiller/docker-intel-gpu-telegraf](https://github.com/brianmiller/docker-intel-gpu-telegraf)
+but with a few changes. In the LXC console, install intel gpu tools:
+
+`apt install intel-gpu-tools`
+
+and then install telegraf:
+`# influxdata-archive_compat.key GPG Fingerprint: 9D539D90D3328DC7D6C8D3B9D8FF8E1F7DF8B07E
+wget -q https://repos.influxdata.com/influxdata-archive_compat.key
+echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdata-archive_compat.key' | sha256sum -c && cat influxdata-archive_compat.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg > /dev/null
+echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list
+sudo apt-get update && sudo apt-get install telegraf`
+
+Remove the telegraf config file at `/etc/telegraf/telegraf.conf` and replace it with the one here (link TBA).
+
+To set up the intel stats collector, we need to also add the script that telegraf calls. I use a slightly modified script to Brian Miller, see link here.
+Store the script at /opt/get_intel_gpu_status.sh
+
+We will need to run the telegraf service as a root service, otherwise this won't work:
+`systemctl stop telegraf`
+`systemctl edit telegraf`
+
+Add the following lines:
+`[Service]`
+`User=root`
+
+Then:
+systemctl start telegraf
+
+Keep in mind that influx will need the telegraf-igpu created for this to work.
+
+You should see stats being pulled in now to grafana.
+
+
 
