@@ -54,20 +54,56 @@ Assign these to your trunk or Mikrotik interface as necessary. Note if using a t
 
 Ensure the assignments are set up and add the interfaces to the list. We will leave the WAN one disabled for now.
 
-In the Mikrotik_LAN interface set "Static IPv4" and "172.16.20.1" as the interface address.
+In the firewall rules, add the following rule on the Mikrotik_LAN interface:
+Pass / IPV4 / Source: Mikrotik_LAN / Destination: Any
+This will allow internet access on the LAN interface to update routerOS.
 
+You should be able to access the Mikrotik_LAN interface now by navigating to 172.16.20.3.
 
+Now to clean it all up:
+* Interfaces -> Interface: Disable wireless card (so there is not a stray wifi SSID, you can access via LAN now).
+* Interfaces -> Interface: Disable the bridge (no need to remove it)
 
-Set your computer to a static 192.168.88.X address to connect to the Mikrotik.
+# Mikrotik LTE wAP configuration: LTE connection
 
-IP->DHCP Server: Disable the DHCP server
-IP-> DNS->Click the static button and disable the DNS server
-IP-> Addresses: Add a new address inside your LAN (I used 172.16.10.3/24 with a 172.16.10.0 network). You will need to shuffle some things around to maintain connectivity. The Mikrotik wAP does not like showing two interfaces when a VLAN is active on the bridge. Therefore, the bridge cannot be used. Both WAN and LAN interface need to be presented as VLANs on the ethernet interface (e.g. 932 and 10 respectively), and the ethernet interface removed from the bridge. But be careful! You can lose complete connectivity to your Mikrotik as you will lock yourself out if you disable the bridge. Therefore some sort of shuffle needs to take place using the wirelesspart of the Mikrotik wAP. To be detailed later.
+In the quickset page, add your SIM PIN (should be 0000 normally) click apply, then go to the webfig page. 
 
-Go back to OPNsense on your home network. Add OPT3 as an interface, which is the LAN of the Mikrotik to the LAN bridge. 
+Go to Interfaces -> LTE tab -> APN. Make sure you delete any existing APNs except for the “default”. 
 
-Go back to the Mikrotik network, you should be able to access it with a static 172 address now.
+Go back to the LTE tab, and click the button that says “LTE APNs”.
 
+Edit the “default” APN with the following values:
+* Name: Orange F
+* APN: orange.fr
+* IP Type: IPv4
+* Use Peer DNS: Yes (checked)
+* Add default route: Yes (checked)
+* Default Route Distance: 2
+* IPv6 Interface: none
+* Authentication: PAP
+* User: orange
+* Password: orange
+* Passthrough Interface: none
+
+Now telnet into the Mikrotik interface, and enter the MCC and MNC together:
+
+`telnet -l admin 192.168.88.1`
+`/interface lte set lte1 operator=20801`
+
+You can monitor the connection link from here:
+`/interface lte info lte1`
+
+If it connects correctly you should see:
+`           pin-status: ok`
+`  registration-status: registered`
+`        functionality: full`
+`         manufacturer: "MikroTik"`
+`                model: "R11e-LTE"`
+`             revision: "MikroTik_CP_2.160.000_v015"`
+`     current-operator: Orange F`
+Followed by some cellular information and numbers.
+
+At this point it is prudent to disable the LTE interface while we setup the bridging (Interfaces, click the little “D” next to LTE).
 
 # OPNsense configuration
 
@@ -124,61 +160,10 @@ Note that IPv6 is not monitored. Based on the Orange fibre configuration with op
 
 Make sure you select “Upstream Gateway” for the primary WAN, otherwise both WANs will be presented to the network as gateway candidates and DNS will be half broken. This is not documented in the OPNsense wiki! Furthermore, ensure you update the priority of the primary WAN to be higher than the secondary WAN.
 
-# Configuring LAN access in Mikrotik wAP
 
-This will configure web interface access over ethernet (remembering that internet is over vlan 932).
 
-Set your computer to a static 192.168.88.X address to connect to the Mikrotik.
 
-IP->DHCP Server: Disable the DHCP server
-IP-> DNS->Click the static button and disable the DNS server
-IP-> Addresses: Add a new address inside your LAN (I used 172.16.10.3/24 with a 172.16.10.0 network). You will need to shuffle some things around to maintain connectivity. The Mikrotik wAP does not like showing two interfaces when a VLAN is active on the bridge. Therefore, the bridge cannot be used. Both WAN and LAN interface need to be presented as VLANs on the ethernet interface (e.g. 932 and 10 respectively), and the ethernet interface removed from the bridge. But be careful! You can lose complete connectivity to your Mikrotik as you will lock yourself out if you disable the bridge. Therefore some sort of shuffle needs to take place using the wirelesspart of the Mikrotik wAP. To be detailed later.
 
-Go back to OPNsense on your home network. Add OPT3 as an interface, which is the LAN of the Mikrotik to the LAN bridge. 
-
-Go back to the Mikrotik network, you should be able to access it with a static 172 address now.
-
-------
-# Mikrotik LTE wAP configuration: LTE connection
-
-add your SIM PIN (should be 0000 normally) click apply, then go to the webfig page. 
-
-Go to Interfaces -> LTE tab -> APN. Make sure you delete any existing APNs except for the “default”. 
-
-Go back to the LTE tab, and click the button that says “LTE APNs”.
-
-Edit the “default” APN with the following values:
-* Name: Orange F
-* APN: orange.fr
-* IP Type: IPv4
-* Use Peer DNS: Yes (checked)
-* Add default route: Yes (checked)
-* Default Route Distance: 2
-* IPv6 Interface: none
-* Authentication: PAP
-* User: orange
-* Password: orange
-* Passthrough Interface: none
-
-Now telnet into the Mikrotik interface, and enter the MCC and MNC together:
-
-`telnet -l admin 192.168.88.1`
-`/interface lte set lte1 operator=20801`
-
-You can monitor the connection link from here:
-`/interface lte info lte1`
-
-If it connects correctly you should see:
-`           pin-status: ok`
-`  registration-status: registered`
-`        functionality: full`
-`         manufacturer: "MikroTik"`
-`                model: "R11e-LTE"`
-`             revision: "MikroTik_CP_2.160.000_v015"`
-`     current-operator: Orange F`
-Followed by some cellular information and numbers.
-
-At this point it is prudent to disable the LTE interface while we setup the bridging (Interfaces, click the little “D” next to LTE).
 
 # Untested:
 There is a reported bug (as per the Mikrotik forum) of the RP filter erroneously filtering traffic, change it by doing: IP -> Settings -> RP filter: Loose 
