@@ -159,23 +159,3 @@ For the primary WAN I left the default probe interval and time period, but I cha
 Note that IPv6 is not monitored. Based on the Orange fibre configuration with opnsense you don’t get a gateway in the gateway menu. Besides – if IPv4 fails, most likely IPv6 will also – although I have seen some uncommon cases where this has not happened!
 
 Make sure you select “Upstream Gateway” for the primary WAN, otherwise both WANs will be presented to the network as gateway candidates and DNS will be half broken. This is not documented in the OPNsense wiki! Furthermore, ensure you update the priority of the primary WAN to be higher than the secondary WAN.
-
-
-
-
-
-
-# Untested:
-There is a reported bug (as per the Mikrotik forum) of the RP filter erroneously filtering traffic, change it by doing: IP -> Settings -> RP filter: Loose 
-
-
-
-
-
-
-
-
-
-
-
-
