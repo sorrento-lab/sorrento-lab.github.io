@@ -168,10 +168,6 @@ Make sure you select “Upstream Gateway” for the primary WAN, otherwise both 
 # Untested:
 There is a reported bug (as per the Mikrotik forum) of the RP filter erroneously filtering traffic, change it by doing: IP -> Settings -> RP filter: Loose 
 
-Further settings to enable LAN access:
-IP-> Routes: Add a new route, only add 172.16.10.1 as a gateway, everything else can stay default.
-
-Return to your home LAN. Check if 172.16.10.3 is accessible. If it is, you can disable the wireless under Interfaces.
 
 
 
