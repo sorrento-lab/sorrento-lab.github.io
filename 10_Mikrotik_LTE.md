@@ -8,7 +8,7 @@ TO COMPLETE AND TEST...UNTESTED CONFIGURATION!
 
 ## 10. Mikrotik LTE Fallback with OPNsense
 
-It has happened a few times for me that due to works in the area, the OrangeFR fibre service is offline (for up to 2 months!). In cases like these for the higher plans OrangeFR offers 200Gb per month on your Orange mobile service to use as a hotspot (in addition to your normal allowance). While this may be satisfactory for the general population, I prefer to have an automatic failover in case the fibre is offline, with all WAN traffic still routed through OPNsense and distributed as per normal to my LAN.
+It has happened a few times for me that due to works in the area, the OrangeFR fibre service is offline (for up to 2 months!). In cases like these for the higher plans OrangeFR offers 200Gb per month on your Orange mobile service to use as a hotspot (in addition to your normal allowance). While this may be satisfactory for the general population, I prefer to have an automatic failover in case the fibre is offline, with all WAN traffic still routed through OPNsense and distributed to selected clients in my LAN.
 
 This section describes the setup of a Mikrotik wAP LTE device with an Orange mobile “multi-sim” offer which allows sharing of data between the mobile phone SIM card and a second data SIM card. The general intent is to have OPNsense failover to the LTE connection when the fibre is offline. Optionally some services can be severed or firewalled to prevent exceeding data caps.
 
@@ -66,11 +66,12 @@ Now to clean it all up:
 
 # Mikrotik LTE wAP configuration: LTE connection
 
-In the quickset page, add your SIM PIN (should be 0000 normally) click apply, then go to the webfig page. 
+Go to interfaces -> LTE and then click the default "lte1" interface that is available:
+* Add your SIM PIN (should be 0000 normally)
+* Add the Operator - for Orange, this is the MCC and MNC put together: 20801 (previously I used `/interface lte set lte1 operator=20801`)
+* Click Apply and OK
 
-Go to Interfaces -> LTE tab -> APN. Make sure you delete any existing APNs except for the “default”. 
-
-Go back to the LTE tab, and click the button that says “LTE APNs”.
+Go to Interfaces -> LTE tab -> APN button. Make sure you delete any existing APNs except for the “default”. 
 
 Edit the “default” APN with the following values:
 * Name: Orange F
@@ -85,10 +86,7 @@ Edit the “default” APN with the following values:
 * Password: orange
 * Passthrough Interface: none
 
-Now telnet into the Mikrotik interface, and enter the MCC and MNC together:
-
-`telnet -l admin 192.168.88.1`
-`/interface lte set lte1 operator=20801`
+When you click apply, the lte interface will reboot, after 30 seconds or so you will see an LTE WAN IP address available.
 
 You can monitor the connection link from here:
 `/interface lte info lte1`
@@ -103,35 +101,37 @@ If it connects correctly you should see:
 `     current-operator: Orange F`
 Followed by some cellular information and numbers.
 
-At this point it is prudent to disable the LTE interface while we setup the bridging (Interfaces, click the little “D” next to LTE).
+It is highly recommended to update the LTE firmware - it is tricky to do this without the LTE connection, as the Mikrotik command uses the LTE data to pull the firmware file and install it. To check the firmware:
+
+Go to the terminal of the Mikrotik device. To check the firmware status:
+`/interface lte firmware-upgrade lte1`
+
+The response will show you the currently installed and latest available.
+
+To update:
+`/interface lte firmware-upgrade lte1 upgrade=yes`
+
+This will initiate the update, it takes about 3-5 mins and there is no install progress bar, do not power cycle the device.
+
+Once installed, the lte interface will reboot and you will have your IP back. At this point it is prudent to disable the lte interface until we are ready to use it again.
 
 # OPNsense configuration
 
-The LTE connection will be passed via a VLAN, similar to the Orange Fibre to the OPNsense system.
+Prior to adding the LTE_WAN into opnsense, ensure that your fibre takes priority. Go to gateways, and for your IPV4 and IPV6 connection set them as priority 254 (instead of 255). Also check the box indicating "upstream gateway" for the IPV4 fibre connection. This will make opnsense use the fibre connection in preference to the LTE_WAN connection.
 
-In OPNsense: Interfaces -> VLAN Tab -> Add New
-
-Name: mobile_WAN
-VLAN ID: 932 (can be anything)
-Interface: ether1
-Click Save/OK
+The LTE connection will be passed via a VLAN, similar to the Orange Fibre to the OPNsense system. For this we use the previously created VLAN 932.
 
 On your Mikrotik LTE wAP, go back to the APN settings, and change:
-Passthrough Interface: mobile_WAN
+Passthrough Interface: LTE_VLAN_932
 Passthr. MAC Address: generate a random MAC
 
-Note that you will lose the WAN IP address in the Mikrotik interface, as the DHCP request is now expected from OPNsense via vlan 932.
-
-For the next step, make sure that the interface you have connected the Mikrotik is passed through to Proxmox. For my case, I had a spare Realtek NIC on my motherboard I passed through. You can do this with some switching and routing, but I prefer all my WAN connections on dedicated passed through devices so that any errors I make will be kept upstream of OPNsense.
+Note that you will lose the WAN IP address in the Mikrotik interface, as the DHCP request to estabolish WAN connectivity is now expected from OPNsense via vlan 932.
 
 Go to OPNsense GUI. 
 
-Add the following:
-Interfaces -> Other Types -> VLANs -> Add a vlan on re0 (Realtek) with number 932. Call it Orange Mobile Internet
+Ensure that an interface is available with vlan932 - go to this interface. In my case, I have an interface called `WAN_LTE`
 
-Interfaces -> Assignments -> Assign vlan932 on re0 named WAN2
-
-Interfaces -> WAN2: Use the following settings:
+Go to Interfaces -> WAN_LTE, Use the following settings:
 •	Enable Interface: YES
 •	Prevent Interface Removal: YES
 •	Block private networks: YES
@@ -140,11 +140,11 @@ Interfaces -> WAN2: Use the following settings:
 •	MAC address: enter the MAC you randomly generated earlier from Mikrotik. This step is important as this will ensure it looks like the MAC that is requested comes from the device holding the SIM itself.
 Everything else can stay as default.
 
-Save and apply, and now we should have a mobile WAN address on the WAN2 interface.
+Save and apply, and now we should have a mobile WAN address on the `WAN_LTE` interface. In Mikrotik Quickset it will still say `0.0.0.0`, but dig a bit further in the Webfig menus and you will find that Mikrotik creates a sort of bridge with an internal IP address to pass all of this, with the WAN address assigned to it.
+
+----TESTED up to here-----
 
 # OPNsense gateway groupings
-
-At this stage you may lose connectivity due to having two single gateways.
 
 To create a failover group, follow this tutorial:
 https://docs.opnsense.org/manual/how-tos/multiwan.html
