@@ -59,9 +59,9 @@ echo '393e8779c89ac8d958f81f942f9ad7fb82a25e133faddaf92e15b16e6ac9ce4c influxdat
 echo 'deb [signed-by=/etc/apt/trusted.gpg.d/influxdata-archive_compat.gpg] https://repos.influxdata.com/debian stable main' | sudo tee /etc/apt/sources.list.d/influxdata.list
 sudo apt-get update && sudo apt-get install telegraf`
 
-Remove the telegraf config file at `/etc/telegraf/telegraf.conf` and replace it with the one here (link TBA).
+Still inside the Plex LXC console, remove the telegraf config file at `/etc/telegraf/telegraf.conf` and replace it with the one here (link TBA).
 
-To set up the intel stats collector, we need to also add the script that telegraf calls. I use a slightly modified script to Brian Miller, see link here.
+To set up the intel stats collector, we need to also add the script that telegraf calls. I use a slightly modified script to Brian Miller, [see link here](https://raw.githubusercontent.com/sorrento-lab/sorrento-lab.github.io/master/resources/get_intel_gpu_status.sh).
 Store the script at /opt/get_intel_gpu_status.sh
 
 We will need to run the telegraf service as a root service, otherwise this won't work:
