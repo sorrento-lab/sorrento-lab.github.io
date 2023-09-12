@@ -1,6 +1,6 @@
 ---
 title: 9.1 Plex LXC
-parent: 9. Plex Specifics
+parent: 9. LXC Specifics
 has_children: false
 nav_order: 1
 ---
