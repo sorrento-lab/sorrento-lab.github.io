@@ -75,7 +75,7 @@ Add the following lines:
 Then:
 systemctl start telegraf
 
-Keep in mind that influx will need the telegraf-igpu created for this to work.
+Keep in mind that influx will need the telegraf-igpu database created for this to work, the plex LXC telegraf will not create the database.
 
 You should see stats being pulled in now to grafana.
 
